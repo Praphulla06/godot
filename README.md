@@ -184,3 +184,56 @@ func _ready() -> void:
 	items.remove_at(2)
 	items.append("Grapes")
 ```
+
+### *Loops*
+
+```
+extends Node2D
+
+func _ready() -> void:
+	
+	var items: Array[String] = ["Apple", "Banana", "Cherry"]
+	
+	for item in items:
+		if (item.length() > 5):
+			print(item)
+	
+	for i in 10:
+		print(i)
+	
+	var glass: float = 0.0
+	
+	while glass <= 10.0:
+		print(glass)
+		if glass > 3.4:
+			break
+		glass += 0.7
+	print("The glass is full")
+```
+
+### *Dictionaries*
+
+```
+extends Node2D
+
+func _ready() -> void:
+	
+	#var players: Dictionary = {
+		#"Crook" : 10,
+		 #"Villian" : 45,
+		 #"Boss" : 110
+	#}
+	
+	var players: Dictionary = {
+		"Crook" : {"Level": 1, "Health": 100},
+		"Villian" : {"Level": 78, "Health": 200},
+		"Boss" : {"Level": 120, "Health": 400},
+	}
+
+	print(players["Villian"]["Level"])
+	print(players["Villian"]["Health"])
+	
+	for username in players:
+		print(username+ ": " + str(players[username]))
+
+```
