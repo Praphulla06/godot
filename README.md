@@ -237,3 +237,172 @@ func _ready() -> void:
 		print(username+ ": " + str(players[username]))
 
 ```
+
+### *Enums*
+
+![alt text](image-4.png)
+
+```
+extends Node2D
+
+enum Alignment { ALLY, NEUTRAL, ENEMY}
+
+@export var unit_alignment: Alignment
+
+func _ready():
+	if unit_alignment == Alignment.NEUTRAL:
+		print("Neutral")
+	elif unit_alignment == Alignment.ALLY:
+		print("ALLY")
+	else:
+		print("Enemy")
+```
+
+### *Match*
+
+```
+extends Node2D
+
+enum Alignment { ALLY, NEUTRAL, ENEMY}
+
+@export var unit_alignment: Alignment
+
+func _ready():
+	match unit_alignment:
+		Alignment.ALLY:
+			print("Ally")
+		Alignment.NEUTRAL:
+			print("Neutral")
+		Alignment.ENEMY:
+			print("Enemy")
+		_:
+			print("Default")	
+```
+
+### *Modifying Nodes 2.0*
+
+![alt text](image-5.png)
+
+![alt text](image-6.png)
+
+![alt text](image-7.png)
+
+```
+extends Node2D
+
+@onready var weapon: Sprite2D = $Player/Weapon
+@export var my_node: Node
+
+func _ready():
+	if my_node is Node2D:
+		print("Node 2D")
+```
+
+### *Signals*
+
+```
+extends Node2D
+
+var xp: int = 0
+
+signal leveled_up(msg)
+
+func _ready():
+	leveled_up.connect(_on_leveled_up)
+
+func _on_timer_timeout() -> void:
+	xp += 5
+	print(xp)
+	if xp >= 20:
+		xp = 0
+		leveled_up.emit("Ding!")
+		
+func _on_leveled_up(msg) -> void:
+	print(msg)
+
+```
+
+### *Get/Set*
+
+```
+extends Node2D
+
+signal health_changed(new_health)
+
+var health: int = 100:
+	set(value):
+		health = clamp(value, 0, 100)
+		health_changed.emit(health)
+
+var chance: float = 0.28
+var chance_pet: int:
+	get:
+		return chance * 100
+	set(value):
+		chance = float(value) / 100.0
+
+func _ready():
+	health = 200
+	print(chance_pet)
+	chance_pet = 45
+	print(chance_pet)
+	
+func _on_health_changed(new_health: Variant) -> void:
+	print(new_health)
+```
+
+### *Classes*
+
+#### *main.gd*
+
+```
+extends Node2D
+
+@export var character_to_kill: Character
+
+func _ready() -> void:	
+	character_to_kill.die()
+
+```
+
+#### *character.gd*
+
+```
+class_name Character
+
+extends Node
+
+@export var profession: String
+@export var health: int
+
+func _ready() -> void:
+	pass 
+
+func die() -> void:
+	health = 0
+	print(profession + " died")
+
+```
+
+### *Inner Class*
+
+#### *character.gd*
+
+```
+class_name Character
+
+extends Node
+
+var chest := Equipment.new()
+var legs := Equipment.new()
+
+class Equipment:
+	var armor := 10
+	var weight := 5
+
+func _ready() -> void:
+	chest.armor = 20
+	print(chest.armor)
+	legs.weight = 10
+	print(legs.armor)
+```
